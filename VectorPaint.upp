@@ -1,0 +1,14 @@
+uses
+	CtrlLib;
+
+file
+	MainForm.lay,
+	ShapePicture.h,
+	Shapes.h,
+	PictureController.h,
+	MainForm.h,
+	main.cpp;
+
+mainconfig
+	"" = "GUI";
+
