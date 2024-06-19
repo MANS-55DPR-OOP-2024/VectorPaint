@@ -88,7 +88,7 @@ class Triangle: public Line{
 };
 
 
-class Mandelbrot: public Shape{
+class Mandelbrot: public Line{
 	private:
 		Image img;
 		const int maxIt=100;
@@ -121,12 +121,7 @@ class Mandelbrot: public Shape{
 		}
 		
 	public:
-		Mandelbrot(string name="mandelbrot"):Shape(name){
-			points.push_back(Point(100,100));
-			points.push_back(Point(300,300));
-			
-			color=Blue();
-			
+		Mandelbrot(string name="mandelbrot"):Line(name){
 			update();
 		}
 		
