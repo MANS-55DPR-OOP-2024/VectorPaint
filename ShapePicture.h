@@ -1,7 +1,7 @@
 #ifndef _VectorPaint_Picture_h_
 #define _VectorPaint_Picture_h_
 
-
+#include <CtrlLib/CtrlLib.h>
 
 class ShapePicture{
 	private:
@@ -29,17 +29,19 @@ class ShapePicture{
 				return NULL;
 		}
 		
-		Shape* addLine(){
-			Line*ln=new Line();
-			shps.push_back(ln);
-			return ln;
+		Shape* addShape(string kind){
+			Shape *sp=NULL;
+			//TODO add names for new figures
+			if(kind=="line") sp=new Line();
+			if(kind=="tri") sp=new Triangle();
+			if(kind=="frc") sp=new Mandelbrot();
+			
+			if(sp!=NULL)shps.push_back(sp);
+			else Upp::PromptOK("unknown shape: "<<kind);
+			return sp;
 		}
 		
-		Shape* addTriangle(){
-			Triangle*ln=new Triangle();
-			shps.push_back(ln);
-			return ln;
-		}
+
 		
 		
 	

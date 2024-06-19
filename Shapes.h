@@ -1,4 +1,3 @@
-
 #include <CtrlLib/CtrlLib.h>
 
 using namespace Upp;
@@ -13,13 +12,14 @@ class Shape{
 	public:
 		Shape(string nm):name(nm){}
 		virtual ~Shape(){}
+
 		void setSelect(bool sel){
 			selected=sel;
 		}
 		int size(){
 			return points.size();
 		}
-		void setponit(int i, Point pnt){
+		virtual void setponit(int i, Point pnt){
 			if(i<points.size()) points[i]=pnt;
 		}
 		string getName(){
@@ -86,3 +86,68 @@ class Triangle: public Line{
 			points[2].Offset(-dx1,-dy1);
 		}
 };
+
+
+class Mandelbrot: public Shape{
+	private:
+		Image img;
+		const int maxIt=100;
+		int num_iters(double cx, double cy) {
+	        std::complex<double> z(0.0, 0.0);
+	        std::complex<double> c(cx, cy);
+	        for (int i = 0; i <= maxIt; ++i) {
+	            if (std::abs(z) > 2.0) return i;
+	            z = z * z + c;
+	        }
+	        return maxIt;
+    }
+		void update(){
+			int width = points[1].x - points[0].x;
+			int height = points[1].y - points[0].y;
+			if(width<=0||height<=0)return;
+			
+			ImageBuffer ib(width, height);
+			RGBA* t = ~ib;
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					double cx = (double)x/ width*2.0 - 1.5;
+					double cy = (double)y/ height*2.0 - 1.0;
+					int iterations = num_iters(cx, cy);
+					Color color = HsvColorf(double(1.0/iterations) , 1, (iterations < maxIt));
+					*t++ = color;
+				}
+			}
+			img = ib;
+		}
+		
+	public:
+		Mandelbrot(string name="mandelbrot"):Shape(name){
+			points.push_back(Point(100,100));
+			points.push_back(Point(300,300));
+			
+			color=Blue();
+			
+			update();
+		}
+		
+		virtual void setponit(int i, Point pnt){
+			Shape::setponit(i,pnt);
+			
+			update();
+		}
+		
+		virtual void paint(Draw& w){
+			w.DrawImage(points[0].x, points[0].y, img);
+		}
+		
+		virtual void moveto(Point to){
+			int dx=points[0].x-points[1].x;
+			int dy=points[0].y-points[1].y;
+			
+			points[0]=to;
+			points[1]=Point(to);
+			points[1].Offset(-dx,-dy);
+		}
+};
+
+

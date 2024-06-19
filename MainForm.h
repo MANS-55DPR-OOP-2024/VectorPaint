@@ -28,13 +28,18 @@ class MainForm : public  WithMainFormLayout<TopWindow>  {
 			pictController.init(&pict);
 			
 			addLineButton<<[=] { 
-				Shape*shp= pict.addLine();
+				Shape*shp= pict.addShape("line");
 				pictController.startInput(shp);
 				updateList();
 			};
 			
 			addTriButton<<[=] { 
-				Shape*shp= pict.addTriangle();
+				Shape*shp= pict.addShape("tri");
+				pictController.startInput(shp);
+				updateList();
+			};
+			addFrciButton<<[=] { 
+				Shape*shp= pict.addShape("frc");
 				pictController.startInput(shp);
 				updateList();
 			};
