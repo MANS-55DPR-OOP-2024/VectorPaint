@@ -4,6 +4,7 @@ uses
 file
 	MainForm.lay,
 	ShapePicture.h,
+	Propertys.h,
 	Shapes.h,
 	PictureController.h,
 	MainForm.h,

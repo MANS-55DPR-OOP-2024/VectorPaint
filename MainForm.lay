@@ -5,6 +5,7 @@ LAYOUT(MainFormLayout, 868, 420)
 	ITEM(PictureController, pictController, HSizePosZ(168, 24).VSizePosZ(8, 8))
 	ITEM(Upp::ColumnList, nameList, LeftPosZ(8, 140).TopPosZ(76, 140))
 	ITEM(Upp::Button, moveSelected, SetLabel(t_("Move")).LeftPosZ(12, 56).TopPosZ(220, 15))
-	ITEM(Upp::Button, resizeSelected, SetLabel(t_("Resize")).LeftPosZ(76, 56).TopPosZ(220, 15))
+	ITEM(Upp::Button, resizeSelected, SetLabel(t_("Resize")).LeftPosZ(12, 56).TopPosZ(236, 15))
+	ITEM(Upp::Button, proprtySelected, SetLabel(t_("Propertys")).LeftPosZ(12, 56).TopPosZ(252, 15))
 END_LAYOUT
 

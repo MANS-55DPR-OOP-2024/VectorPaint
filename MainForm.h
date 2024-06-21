@@ -4,6 +4,9 @@
 #include <CtrlLib/CtrlLib.h>
 #include "PictureController.h"
 #include "ShapePicture.h"
+#include "Propertys.h"
+
+
 
 #define LAYOUTFILE <VectorPaint/MainForm.lay>
 #include <CtrlCore/lay.h>
@@ -54,7 +57,18 @@ class MainForm : public  WithMainFormLayout<TopWindow>  {
 				if(nameList.GetCursor()>=0){
 					pictController.startResize(pict.getShape(nameList.GetCursor()));	
 				}
+			};
+			
+			proprtySelected<<[=]{
+				int c=nameList.GetCursor();
+				if(c>=0){
+					PropertyHelper::showDialog(pict.getShape(c));	
+					updateList();
+					nameList.SetCursor(c);
+				}
 			};	
+			
+			
 		}
 };
 
