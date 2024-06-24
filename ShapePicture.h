@@ -3,6 +3,10 @@
 
 #include <CtrlLib/CtrlLib.h>
 
+//Изображение из фигур
+//Хранит массив фигур изображения
+//выводит изображение на форму
+
 class ShapePicture{
 	private:
 		vector <Shape*>shps;
@@ -31,10 +35,11 @@ class ShapePicture{
 		
 		Shape* addShape(string kind){
 			Shape *sp=NULL;
-			//TODO add names for new figures
+			//TODO тут изменить добавление новых типов фигур
 			if(kind=="line") sp=new Line();
 			if(kind=="tri") sp=new Triangle();
 			if(kind=="frc") sp=new Mandelbrot();
+			if(kind=="text") sp=new TextShape();
 			
 			if(sp!=NULL)shps.push_back(sp);
 			else Upp::PromptOK("unknown shape: "<<kind);

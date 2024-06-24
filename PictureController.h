@@ -9,6 +9,9 @@
 using namespace Upp;
 
 
+//Контроллер изображения,
+//позволяет контролировать ввод мышью,
+//перемещение или измение координат фигур
 
 class PictureController : public Ctrl {
 	enum mouseInputState{none, input, movoto, inputStart, resize};

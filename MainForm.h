@@ -14,6 +14,9 @@
 using namespace Upp;
 
 
+//Главная форма программы
+//содержит изображение
+
 class MainForm : public  WithMainFormLayout<TopWindow>  {
 	private:
 		ShapePicture pict;	
@@ -30,6 +33,7 @@ class MainForm : public  WithMainFormLayout<TopWindow>  {
 			
 			pictController.init(&pict);
 			
+			//тут привязаны обработчики нажатий на кнопки формы
 			addLineButton<<[=] { 
 				Shape*shp= pict.addShape("line");
 				pictController.startInput(shp);
@@ -43,6 +47,12 @@ class MainForm : public  WithMainFormLayout<TopWindow>  {
 			};
 			addFrciButton<<[=] { 
 				Shape*shp= pict.addShape("frc");
+				pictController.startInput(shp);
+				updateList();
+			};
+			
+			addTextButton<<[=]{
+				Shape*shp= pict.addShape("text");
 				pictController.startInput(shp);
 				updateList();
 			};

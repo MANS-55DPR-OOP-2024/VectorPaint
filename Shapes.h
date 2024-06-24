@@ -6,14 +6,20 @@
 using namespace Upp;
 using namespace std;
 
+
+//Базовая фигура
+//состоит из масива точек, имени и цвета фигуры
+
 class Shape{
 	protected:
 		string name;
 		Color color;
+		int width;
+		
 		bool selected;
 		vector<Point> points;
 	public:
-		Shape(string nm):name(nm){}
+		Shape(string nm):name(nm),width(1){}
 		virtual ~Shape(){}
 
 		void setSelect(bool sel){
@@ -37,25 +43,31 @@ class Shape{
 		void setColor(Color cl){
 			color=cl;
 		}
+		int getWidth(){
+			return width;
+		}
+		void setWidth(int w){
+			width=w;
+		}
 		virtual void paint(Draw& w)=0;
-		virtual void moveto(Point to)=0;
-		
-		
+		virtual void moveto(Point to)=0;	
 };
 
+
+//Наследник базовой фигуры
+//Линия - две точки
 class Line: public Shape{
 	public:
 		Line(string name="line"):Shape(name){
 			points.push_back(Point(100,100));
 			points.push_back(Point(300,300));
 			
-	
 			color=Black();
 		}
 		
 		virtual void paint(Draw& w){
 			w.DrawLine(points[0], points[1],
-				selected?3:1,
+				selected? 3: width,
 				color);
 		}
 		
@@ -69,17 +81,19 @@ class Line: public Shape{
 		}
 };
 
+//Наследник Линии, состоит из трех точек
+
 class Triangle: public Line{
 	public:
-		Triangle(string name="triangle"):Line(name){
+		Triangle(string name="triangle"): Line(name){
 			points.push_back(Point(100,300));
 			
 			color=Red();
 		}
 		virtual void paint(Draw& w){
-			w.DrawLine(points[0], points[1],selected?3:2,color);	
-			w.DrawLine(points[1], points[2],selected?3:2,color);
-			w.DrawLine(points[2], points[0],selected?3:2,color);
+			w.DrawLine(points[0], points[1],selected?3: width, color);	
+			w.DrawLine(points[1], points[2],selected?3: width, color);
+			w.DrawLine(points[2], points[0],selected?3: width, color);
 		}
 		
 		virtual void moveto(Point to){
@@ -96,6 +110,27 @@ class Triangle: public Line{
 		}
 };
 
+//Класс текст
+class TextShape: public Shape{
+	public:
+		TextShape(string name="text"):Shape(name){
+			points.push_back(Point(100,100));
+			
+			color=Green();
+		}
+		
+		virtual void paint(Draw& w){
+			w.DrawText(points[0].x, points[0].y, name, Arial(10+width), color);
+		}
+		
+		virtual void moveto(Point to){
+			points[0]=to;
+		}
+};
+
+
+//Фрактал Мандельброта
+//задается двкмя точками
 
 class Mandelbrot: public Line{
 	private:
@@ -126,15 +161,6 @@ class Mandelbrot: public Line{
 		
 		virtual void paint(Draw& w){
 			w.DrawImage(points[0].x, points[0].y, img);
-		}
-		
-		virtual void moveto(Point to){
-			int dx=points[0].x-points[1].x;
-			int dy=points[0].y-points[1].y;
-			
-			points[0]=to;
-			points[1]=Point(to);
-			points[1].Offset(-dx,-dy);
 		}
 		
 		void update(){

@@ -6,6 +6,9 @@
 
 using namespace Upp;
 
+
+//Класс помощник ввода свойст фигур
+
 class PropertyHelper{
 	private:
 		static bool fractDialog(Mandelbrot*shp){
@@ -39,22 +42,31 @@ class PropertyHelper{
 			return true;
 		}
 		
+		//подходит простым фигурам
 		static void commDialog(Shape*shp){
 			TopWindow  app;
 			Button ok;
 			app.SetRect(0, 0, Zx(200), Zy(90));
-			EditString name;
-			ColorPusher col;
+			
+			EditString name; //поле ввода
+			ColorPusher col; //выбор цвета
+			SliderCtrl sld;  //ползунок толщины линий
+			
 			name<<=shp->getName();
 			col<<=shp->getColor();
+			sld<<=shp->getWidth();
+			sld.MinMax(1, 100); 
 			
 			app.Add(name.TopPosZ(0, 20).HSizePos());
 			app.Add(col.TopPosZ(20, 20).HSizePos());
+			app.Add(sld.TopPosZ(40, 20).HSizePos());
 			
-			ok<<[&app,shp,&name,&col]{
+			
+			ok<<[&app,shp,&name,&col,&sld]{
 				app.Close();
 				shp->setName(name.GetText().ToString().ToStd());
 				shp->setColor(~col);
+				shp->setWidth(~sld);
 			};
 			app.Add(ok.SetLabel("OK").LeftPos(10, 200).BottomPos(10, 40));
 		
@@ -65,6 +77,7 @@ class PropertyHelper{
 		
 	public:
 		static void showDialog(Shape*shp){
+			//TODO добавить новую функцию для ввода особенных свойст вигур
 			 if(fractDialog(dynamic_cast<Mandelbrot*>(shp)));
 			 else commDialog(shp);
 		}
