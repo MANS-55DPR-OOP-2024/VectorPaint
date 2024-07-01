@@ -5,6 +5,7 @@ file
 	MainForm.lay,
 	ShapePicture.h,
 	Propertys.h,
+	Operations.h,
 	Shapes.h,
 	PictureController.h,
 	MainForm.h,

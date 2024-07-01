@@ -3,6 +3,7 @@
 
 #include <CtrlLib/CtrlLib.h>
 
+
 using namespace Upp;
 using namespace std;
 
@@ -10,7 +11,9 @@ using namespace std;
 //Базовая фигура
 //состоит из масива точек, имени и цвета фигуры
 
-class Shape{
+class Shape  {
+	friend class OperationsHelper;
+	
 	protected:
 		string name;
 		Color color;
@@ -19,7 +22,7 @@ class Shape{
 		bool selected;
 		vector<Point> points;
 	public:
-		Shape(string nm):name(nm),width(1){}
+		Shape(string nm):name(nm),width(1),selected(true){}
 		virtual ~Shape(){}
 
 		void setSelect(bool sel){
@@ -49,8 +52,12 @@ class Shape{
 		void setWidth(int w){
 			width=w;
 		}
-		virtual void paint(Draw& w)=0;
-		virtual void moveto(Point to)=0;	
+		virtual void paint(Draw& w){
+			if(selected)
+				for(int i=0;i<size();i++)
+					w.DrawEllipse(points[i].x-5, points[i].y-5, 10, 10, Red());
+		}
+		virtual void moveto(Point to)=0;
 };
 
 
@@ -66,9 +73,9 @@ class Line: public Shape{
 		}
 		
 		virtual void paint(Draw& w){
-			w.DrawLine(points[0], points[1],
-				selected? 3: width,
-				color);
+			Shape::paint(w);
+			
+			w.DrawLine(points[0], points[1], width, color);
 		}
 		
 		virtual void moveto(Point to){
@@ -91,9 +98,11 @@ class Triangle: public Line{
 			color=Red();
 		}
 		virtual void paint(Draw& w){
-			w.DrawLine(points[0], points[1],selected?3: width, color);	
-			w.DrawLine(points[1], points[2],selected?3: width, color);
-			w.DrawLine(points[2], points[0],selected?3: width, color);
+			Shape::paint(w);
+			
+			w.DrawLine(points[0], points[1], width, color);	
+			w.DrawLine(points[1], points[2], width, color);
+			w.DrawLine(points[2], points[0], width, color);
 		}
 		
 		virtual void moveto(Point to){
@@ -110,7 +119,7 @@ class Triangle: public Line{
 		}
 };
 
-//Класс текст
+//Фигура текст
 class TextShape: public Shape{
 	public:
 		TextShape(string name="text"):Shape(name){
@@ -120,6 +129,8 @@ class TextShape: public Shape{
 		}
 		
 		virtual void paint(Draw& w){
+			Shape::paint(w);
+			
 			w.DrawText(points[0].x, points[0].y, name, Arial(10+width), color);
 		}
 		
@@ -130,7 +141,7 @@ class TextShape: public Shape{
 
 
 //Фрактал Мандельброта
-//задается двкмя точками
+//задается двумя точками
 
 class Mandelbrot: public Line{
 	private:
@@ -160,6 +171,8 @@ class Mandelbrot: public Line{
 		}
 		
 		virtual void paint(Draw& w){
+			Shape::paint(w);
+			
 			w.DrawImage(points[0].x, points[0].y, img);
 		}
 		

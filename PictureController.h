@@ -62,7 +62,7 @@ class PictureController : public Ctrl {
 	       w.DrawRect(GetSize(), White());
 	       
 	       picture->paint(w);
-	       w.DrawText(0, 0, AsString(max), Arial(30), Magenta);
+	       //w.DrawText(0, 0, AsString(max), Arial(30), Magenta);
 		}
 	
 		void MouseMove(Point p, dword keyflags) override{
